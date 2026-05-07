@@ -26,27 +26,31 @@ It does **not** copy or fork the official image generation implementation.
 
 ## Install
 
-Clone or copy the skill folder into your Codex skills directory.
-
-macOS/Linux default:
+Install directly into your Codex skills directory:
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R codex-image-gen ~/.codex/skills/codex-image-gen
+git clone https://github.com/nana-fox/codex-image-gen.git ~/.codex/skills/codex-image-gen
 ```
 
-Windows PowerShell default:
+For local development from an existing checkout, symlink the repo instead:
+
+```bash
+ln -s "$(pwd)" ~/.codex/skills/codex-image-gen
+```
+
+If you already installed it and want a fresh copy:
+
+```bash
+rm -rf ~/.codex/skills/codex-image-gen
+git clone https://github.com/nana-fox/codex-image-gen.git ~/.codex/skills/codex-image-gen
+```
+
+Windows PowerShell:
 
 ```powershell
 New-Item -ItemType Directory -Force "$HOME\.codex\skills" | Out-Null
-Copy-Item -Recurse .\codex-image-gen "$HOME\.codex\skills\codex-image-gen"
-```
-
-If installing from a GitHub checkout:
-
-```bash
-git clone https://github.com/<owner>/codex-image-gen.git
-cp -R codex-image-gen/codex-image-gen ~/.codex/skills/codex-image-gen
+git clone https://github.com/nana-fox/codex-image-gen.git "$HOME\.codex\skills\codex-image-gen"
 ```
 
 ## Quick Use
