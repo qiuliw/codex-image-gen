@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+exec python3 "$(dirname "$0")/codex_image_gen.py" quick "$@"

@@ -1,0 +1,3 @@
+display_name: Codex Image Gen
+short_description: Run official imagegen with Codex auth and custom provider config.
+default_prompt: Generate an image using my current Codex provider configuration.
