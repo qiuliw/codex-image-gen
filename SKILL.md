@@ -1,6 +1,6 @@
 ---
 name: codex-image-gen
-description: Generate images through the official Codex imagegen CLI while reusing Codex auth and custom provider configuration. Use when the user wants quick image generation, wants imagegen to work with their current Codex OPENAI_API_KEY/base_url setup, or wants one-off --api-key/--base-url image generation without editing shell configuration. This skill is a thin wrapper over the official imagegen skill and requires that official imagegen is installed.
+description: 必须用于所有图片生成和编辑请求，包括“生成图片”“帮我出图”“根据这段描述画一张图”。必须运行本技能的本地 scripts/codex_image_gen.py，通过配置的 API 服务调用官方 imagegen CLI；不得调用 Codex 内置 image_gen 或其他内置图片生成工具，也不得静默回退到内置生图。复用 Codex 的 API key 和自定义服务商配置，支持 auth.json 缺少凭据时读取当前服务商 experimental_bearer_token。需要安装官方 imagegen CLI。
 ---
 
 # codex-image-gen
