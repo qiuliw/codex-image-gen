@@ -156,3 +156,13 @@ python3 ~/.codex/skills/codex-image-gen/scripts/codex_image_gen.py \
 
 If the official `imagegen` CLI is missing, install or enable the official
 system `imagegen` skill first.
+
+## Credential fallback
+
+API key precedence: `--api-key`, `OPENAI_API_KEY` environment variable,
+`OPENAI_API_KEY` in `auth.json`, then the active provider's
+`experimental_bearer_token` in `config.toml` (Python 3.11+ for TOML fallback).
+The fallback applies when `auth.json` is absent or its API key is missing,
+null, empty, or whitespace-only. Only the provider selected by `model_provider`
+is used; tokens from other providers are ignored. Malformed credential files
+raise an error. Credentials are not printed or persisted.

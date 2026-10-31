@@ -87,20 +87,37 @@ def read_api_key(cli_api_key: str = "") -> str:
     try:
         data = json.loads(AUTH_PATH.read_text())
     except FileNotFoundError:
-        raise SystemExit(
-            "Missing OPENAI_API_KEY. Pass --api-key, export OPENAI_API_KEY, "
-            f"or sign in so {AUTH_PATH} exists."
-        )
+        data = {}
     except json.JSONDecodeError as exc:
         raise SystemExit(f"Could not parse {AUTH_PATH}: {exc}") from exc
 
     key = data.get("OPENAI_API_KEY")
-    if not key:
-        raise SystemExit(
-            f"{AUTH_PATH} does not contain OPENAI_API_KEY. "
-            "Pass --api-key or export OPENAI_API_KEY."
-        )
-    return key
+    if isinstance(key, str) and key.strip():
+        return key
+
+    # cc-switch and other custom providers may store their token in config.toml.
+    try:
+        import tomllib
+
+        with CONFIG_PATH.open("rb") as handle:
+            config = tomllib.load(handle)
+    except FileNotFoundError:
+        config = {}
+    except tomllib.TOMLDecodeError:
+        # Parser diagnostics may contain the credential's source line.
+        raise SystemExit(f"Could not parse {CONFIG_PATH}: invalid TOML.") from None
+
+    provider_name = config.get("model_provider")
+    providers = config.get("model_providers", {})
+    provider = providers.get(provider_name, {}) if isinstance(providers, dict) else {}
+    key = provider.get("experimental_bearer_token") if isinstance(provider, dict) else None
+    if isinstance(key, str) and key.strip():
+        return key
+    raise SystemExit(
+        "Missing OPENAI_API_KEY. Pass --api-key, export OPENAI_API_KEY, "
+        f"set OPENAI_API_KEY in {AUTH_PATH}, or configure experimental_bearer_token "
+        f"for the active model_provider in {CONFIG_PATH}."
+    )
 
 
 def read_base_url(cli_base_url: str = "") -> str:

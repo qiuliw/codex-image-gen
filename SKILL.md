@@ -81,3 +81,13 @@ into this skill.
 - Use `--dry-run` before a real call when debugging provider configuration.
 - If a real call fails with a network error, retry only after checking whether
   the environment needs network approval or proxy access.
+
+## Credential fallback
+
+API key precedence: `--api-key`, `OPENAI_API_KEY` environment variable,
+`OPENAI_API_KEY` in `auth.json`, then the active provider's
+`experimental_bearer_token` in `config.toml` (Python 3.11+ for TOML fallback).
+The fallback applies when `auth.json` is absent or its API key is missing,
+null, empty, or whitespace-only. Only the provider selected by `model_provider`
+is used; tokens from other providers are ignored. Malformed credential files
+raise an error. Credentials are not printed or persisted.
