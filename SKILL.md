@@ -17,6 +17,17 @@ delegates to:
 ~/.codex/skills/.system/imagegen/scripts/image_gen.py
 ```
 
+## Mandatory local generation routing
+
+当用户说“生成图片”“帮我出图”“根据这段描述画一张图”，或提出其他图片生成、
+图片编辑请求时，必须使用本技能并运行本地 `scripts/codex_image_gen.py`。
+简单生图使用 `quick` 子命令；其他任务使用相应的透传参数。该入口会调用
+本地官方 `imagegen/scripts/image_gen.py` CLI，通过配置的 API 服务执行。
+
+不得调用 Codex 内置 `image_gen` 或其他内置图片生成工具，也不得因内置工具
+可用而绕过本地脚本。若本地脚本、依赖或凭据不可用，应报告具体错误并修复
+可修复的问题；不得静默切换到内置生图。
+
 ## Quick Workflow
 
 1. Ask for the image prompt if the user has not provided one.
